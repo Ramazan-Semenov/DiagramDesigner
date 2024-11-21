@@ -3,7 +3,7 @@
                     xmlns:s="clr-namespace:DiagramDesigner"
                     xmlns:gong="urn:gong-wpf-dragdrop"
                 
-                    xmlns:c="clr-namespace:DiagramDesigner.Controls">
+                    xmlns:c="clr-namespace:DiagramDesigner.Controls" xmlns:ds="clr-namespace:DesignerControlDll;assembly=DesignerControlDll">
 
   <Brush x:Key="ItemStroke">#FFD69436</Brush>
   <LinearGradientBrush x:Key="ItemBrush" StartPoint="0,0" EndPoint="0,1">
@@ -276,16 +276,21 @@
              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
     <ItemsControl.Items>
 
-      <Path Style="{StaticResource Process}" ToolTip="Process">
+      <!--<Path Style="{StaticResource Process}" ToolTip="Process">
         <s:DesignerItem.DragThumbTemplate>
           <ControlTemplate>
             <Path Style="{StaticResource Process_DragThumb}"/>
           </ControlTemplate>
         </s:DesignerItem.DragThumbTemplate>
-      </Path>
+      </Path>-->
             <Label BorderThickness="1" Margin="5" BorderBrush="Black" Panel.ZIndex="0" Content="asdf"/>
+            <ds:EditableTextBlock  Margin="5"></ds:EditableTextBlock>
+            <Button IsEnabled="True" HorizontalContentAlignment="Stretch"  Margin="5">
+                <ds:EditableTextBlock  Height="20"  ></ds:EditableTextBlock>
 
-            <Expander>
+            </Button>
+        
+            <!--<Expander>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -308,14 +313,17 @@
                 </TreeViewItem>
             </TreeView>
             <Path Style="{StaticResource Decision}" ToolTip="Decision">
-        <s:DesignerItem.DragThumbTemplate>
+   
+                
+                
+                <s:DesignerItem.DragThumbTemplate>
           <ControlTemplate>
             <Path Style="{StaticResource Decision_DragThumb}"/>
           </ControlTemplate>
         </s:DesignerItem.DragThumbTemplate>
-      </Path>
+      </Path>-->
 
-      <Path Style="{StaticResource Document}" ToolTip="Document">
+      <!--<Path Style="{StaticResource Document}" ToolTip="Document">
         <s:DesignerItem.DragThumbTemplate>
           <ControlTemplate>
             <Path Style="{StaticResource Document_DragThumb}"/>
@@ -517,7 +525,7 @@
             <Path Style="{StaticResource OffPageReference_DragThumb}"/>
           </ControlTemplate>
         </s:DesignerItem.DragThumbTemplate>
-      </Path>
+      </Path>-->
 
     </ItemsControl.Items>
   </s:Toolbox>

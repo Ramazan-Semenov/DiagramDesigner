@@ -66,8 +66,8 @@
 
     <!-- Connector Style -->
     <Style TargetType="{x:Type s:Connector}">
-        <Setter Property="Width" Value="8"/>
-        <Setter Property="Height" Value="8"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
         <Setter Property="Cursor" Value="Cross"/>
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="Template">
@@ -75,8 +75,9 @@
                 <ControlTemplate TargetType="{x:Type s:Connector}">
                     <Grid>
                         <!-- transparent extra space makes connector easier to hit -->
-                        <Rectangle Fill="Transparent" Margin="-2"/>
-                        <Rectangle Fill="Lavender" StrokeThickness="1" Stroke="#AA000080"/>
+                        <!--<Rectangle Fill="Transparent" Margin="-2"/>-->
+                        <Ellipse Fill="Lavender" StrokeThickness="1" Stroke="Red" />
+                        <!--<Rectangle Fill="Lavender" StrokeThickness="1" Stroke="#AA000080"/>-->
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -96,21 +97,48 @@
     <!-- ResizeDecorator Default Template -->
     <ControlTemplate x:Key="ResizeDecoratorTemplate" TargetType="{x:Type Control}">
         <Grid Opacity="0.7" SnapsToDevicePixels="true">
-            <c:ResizeThumb Height="3" Cursor="SizeNS" Margin="0 -4 0 0"
-                     VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+            <Grid.Resources>
+                <Style  TargetType="{x:Type c:ResizeThumb}">
+                    <Setter Property="SnapsToDevicePixels" Value="true" />
+                    <Setter Property="OverridesDefaultStyle" Value="true" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Thumb">
+                                <!--Add name to ellipse to use in  controltemplate triggers-->
+                                <Ellipse x:Name="Ellipse"  Fill="Green"></Ellipse>
+                                <!-- <ControlTemplate.Triggers>
+                                   <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter TargetName="Ellipse" Property="Fill" Value="Yellow"></Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>-->
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
+            <c:ResizeThumb Height="3" Cursor="SizeNS"
+                           Visibility="Collapsed"
+                           Margin="0 -4 0 0" 
+                     VerticalAlignment="Top" HorizontalAlignment="Stretch"></c:ResizeThumb>
             <c:ResizeThumb Width="3" Cursor="SizeWE" Margin="-4 0 0 0"
-                     VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                     VerticalAlignment="Stretch"
+                           Visibility="Collapsed"
+                           HorizontalAlignment="Left"/>
             <c:ResizeThumb Width="3" Cursor="SizeWE" Margin="0 0 -4 0"
-                     VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                     Visibility="Collapsed"
+                           VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
             <c:ResizeThumb Height="3" Cursor="SizeNS" Margin="0 0 0 -4"
-                     VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
-            <c:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="-6 -6 0 0"
+                Visibility="Collapsed"
+                           VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+            <c:ResizeThumb 
+                
+                Width="7" Height="7" Cursor="SizeNWSE" Margin="-3 -3 0 0"
                      VerticalAlignment="Top" HorizontalAlignment="Left"/>
-            <c:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="0 -6 -6 0"
+            <c:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="0 -3 -3 0"
                      VerticalAlignment="Top" HorizontalAlignment="Right"/>
-            <c:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="-6 0 0 -6"
+            <c:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="-3 0 0 -3"
                      VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
-            <c:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="0 0 -6 -6"
+            <c:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="0 0 -3 -3"
                      VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
         </Grid>
     </ControlTemplate>
@@ -120,7 +148,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type c:DragThumb}">
-                    <Rectangle Fill="Transparent"/>
+                    <Rectangle Fill="Transparent"
+                               StrokeDashArray="4 2"
+        Stroke="Gray" StrokeDashCap="Round" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -138,24 +168,35 @@
                 <ControlTemplate TargetType="{x:Type s:DesignerItem}">
                     <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"
                           ContextMenu="{StaticResource DesignerItemContextMenu}">
+
+
                         <!-- PART_DragThumb -->
                         <c:DragThumb x:Name="PART_DragThumb" 
+                                     Panel.ZIndex="2"
                                      Cursor="SizeAll"/>
                         <!-- PART_ResizeDecorator -->
                         <Control x:Name="PART_ResizeDecorator" 
-                                 Visibility="Collapsed"
+                                 Visibility="Visible"
                                  Template="{StaticResource ResizeDecoratorTemplate}"/>
+
                         <!-- PART_ContentPresenter -->
-                        <ContentPresenter Panel.ZIndex="1" x:Name="PART_ContentPresenter"
+                        <ContentPresenter x:Name="PART_ContentPresenter"
                                           HorizontalAlignment="Stretch"
+                                     Panel.ZIndex="1"
+                                          
                                           AllowDrop="True"
                                           VerticalAlignment="Stretch"
                                           Content="{TemplateBinding ContentControl.Content}"
                                           Margin="{TemplateBinding ContentControl.Padding}"/>
+                        
+                        
+
                         <!-- PART_ConnectorDecorator -->
                         <Control x:Name="PART_ConnectorDecorator"
-                                 Visibility="Hidden"
-                                 Template="{StaticResource ConnectorDecoratorTemplate}"/>
+                                 Visibility="Visible"
+                                 Panel.ZIndex="3"
+                                 Template="{StaticResource ConnectorDecoratorTemplate}">
+                        </Control>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <DataTrigger Value="True" Binding="{Binding RelativeSource={RelativeSource Self},Path=IsGroup}">

@@ -196,6 +196,12 @@
     <Resource Include="Resources\Images\SendToBack.png" />
     <Resource Include="Resources\Images\Ungroup.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DesignerControlDll\DesignerControlDll.csproj">
+      <Project>{eaf7ccca-792b-489c-93ee-37595c437e72}</Project>
+      <Name>DesignerControlDll</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
