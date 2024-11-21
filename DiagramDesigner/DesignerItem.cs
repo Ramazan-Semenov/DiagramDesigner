@@ -180,4 +180,11 @@ namespace DiagramDesigner
             }
         }
     }
+
+
+
+    public partial class DI: ResourceDictionary
+    {
+
+    }
 }

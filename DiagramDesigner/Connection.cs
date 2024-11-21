@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -289,17 +290,80 @@ namespace DiagramDesigner
                 List<Point> linePoints = PathFinder.GetConnectionLine(Source.GetInfo(), Sink.GetInfo(), true);
                 if (linePoints.Count > 0)
                 {
+                    //PathFigure figure = new PathFigure();
                     PathFigure figure = new PathFigure();
+                    figure.IsClosed = false;
                     figure.StartPoint = linePoints[0];
-                    linePoints.Remove(linePoints[0]);
-                    figure.Segments.Add(new PolyLineSegment(linePoints, true));
+
+                   int mdl= linePoints.Count / 2;
+                    //linePoints[1] = new Point(linePoints[1].X/1.1, linePoints[1].Y/1.1);
+                    //linePoints[2] = new Point(linePoints[2].X*1.1, linePoints[2].Y*1.1);
+                    //linePoints[3] = new Point(linePoints[3].X*1.1, linePoints[3].Y*1.1);
+                    //linePoints[4] = new Point(linePoints[4].X*1.1, linePoints[4].Y*1.1);
+                    //linePoints[mdl]=new Point( linePoints[mdl].X*2, linePoints[mdl].Y);
+                    // linePoints.Remove(linePoints[0]);
+                    //int c = linePoints.Count;
+                    //for (int i = 1; i < c; i++)
+                    //{
+                    //    linePoints.Add(new Point(linePoints[i].X , linePoints[i].Y ));
+                    //}
+
+                    //PolyBezierSegment polyBezier = new PolyBezierSegment(linePoints,true);
+                    var startPoint = linePoints[0];
+                    //Кривая Безье
+                    Vector vector = linePoints.Last() - startPoint;
+                    //Point point1 = new Point(startPoint.X + 3 * vector.X / 8, startPoint.Y + 1 * vector.Y / 8);
+                    //Point point2 = new Point(startPoint.X + 5 * vector.X / 8, startPoint.Y + 7 * vector.Y / 8);
+
+                    Point point1 = new Point(startPoint.X + vector.X / 2, startPoint.Y);
+                    Point point2 = new Point(startPoint.X + vector.X / 1.5, startPoint.Y + vector.Y / 0.95);
+
+
+                    BezierSegment polyBezier = new BezierSegment(point1, point2, linePoints.Last(), true);
+                    PolyLineSegment arrow = DrawArrow(point2, linePoints.Last());
+                    //BezierSegment polyBezier = new BezierSegment() {  };
+                    figure.Segments.Add(polyBezier);
+                   // figure.Segments.Add(new BezierSegment() {Point1= linePoints[0],  Point2= linePoints[mdl], Point3= linePoints.Last() });
+                   // figure.Segments.Add(new ArcSegment() { Point= linePoints.Last() });
+                   
+                   // figure.Segments.Add(new PolyLineSegment(linePoints, true));
                     geometry.Figures.Add(figure);
 
                     this.PathGeometry = geometry;
                 }
             }
         }
+        public PolyLineSegment DrawArrow(Point a, Point b)
+        {
+            double HeadWidth = 10; // Ширина между ребрами стрелки
+            double HeadHeight = 5; // Длина ребер стрелки
 
+            double X1 = a.X;
+            double Y1 = a.Y;
+
+            double X2 = b.X;
+            double Y2 = b.Y;
+
+            double theta = Math.Atan2(Y1 - Y2, X1 - X2);
+            double sint = Math.Sin(theta);
+            double cost = Math.Cos(theta);
+
+            Point pt3 = new Point(
+                X2 + (HeadWidth * cost - HeadHeight * sint),
+                Y2 + (HeadWidth * sint + HeadHeight * cost));
+
+            Point pt4 = new Point(
+                X2 + (HeadWidth * cost + HeadHeight * sint),
+                Y2 - (HeadHeight * cost - HeadWidth * sint));
+
+            PolyLineSegment arrow = new PolyLineSegment();
+            arrow.Points.Add(b);
+            arrow.Points.Add(pt3);
+            arrow.Points.Add(pt4);
+            arrow.Points.Add(b);
+
+            return arrow;
+        }
         private void UpdateAnchorPosition()
         {
             Point pathStartPoint, pathTangentAtStartPoint;

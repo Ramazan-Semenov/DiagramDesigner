@@ -112,14 +112,14 @@
                         </Grid>
 
                         <!--Uncomment this to show default label text-->
-                        <!--<TextBlock Width="100" Height="35"
+                        <TextBlock Width="100" Height="35"
                                        Text="{Binding Path=(Canvas.ZIndex)}"
                                        Canvas.Left="{Binding LabelPosition.X}"
                                        Canvas.Top="{Binding LabelPosition.Y}">
                               <TextBlock.RenderTransform>
                                 <TranslateTransform X="5" Y="5"/>
                               </TextBlock.RenderTransform>
-                            </TextBlock>-->
+                            </TextBlock>
 
                         <Canvas.BitmapEffect>
                             <DropShadowBitmapEffect Color="Gray" Direction="315" ShadowDepth="10" Softness="0" Opacity="0.1"/>
